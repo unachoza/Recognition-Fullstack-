@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import './App.css';
 import { longStackSupport } from 'q';
 import Navagation from './components/Navigation'
+import ImageLinkForm from './components/ImageLinkForm'
 import Logo from './components/Logo'
 import "tachyons"
 
@@ -12,8 +13,8 @@ class App extends Component {
        
         <Navagation />
          <Logo />
-        {/*<ImageLinkForm />
-        <FaceRecognition /> */}
+        <ImageLinkForm />
+       {/* <FaceRecognition /> */}
       </div>
     );
   }

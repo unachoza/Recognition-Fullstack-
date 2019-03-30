@@ -1,0 +1,14 @@
+button{
+    color: white;
+    background-color: #259CA1;
+    font-size: 80px;
+}
+
+.center{
+    display: flex;
+    justify-content: center;
+}
+
+.form {
+    background: black;
+}
