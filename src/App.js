@@ -1,11 +1,19 @@
 import React, { Component } from 'react';
 import './App.css';
+import { longStackSupport } from 'q';
+import Navagation from './components/Navigation'
+import Logo from './components/Logo'
+import "tachyons"
 
 class App extends Component {
   render() {
     return (
       <div className="App">
-        <h1>This project will be fullstack</h1>
+       
+        <Navagation />
+         <Logo />
+        {/*<ImageLinkForm />
+        <FaceRecognition /> */}
       </div>
     );
   }
