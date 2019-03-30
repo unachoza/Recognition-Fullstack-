@@ -6,6 +6,7 @@ import ImageLinkForm from './components/ImageLinkForm'
 import Logo from './components/Logo'
 import User from './components/User'
 import FaceRecognition from './components/FaceRecognition'
+import Signin from './components/Signin'
 import Particles from 'react-particles-js';
 import "tachyons"
 
@@ -45,11 +46,11 @@ class App extends Component {
     this.setState({imageUrl: this.state.input})
     app.models
       .predict(
-      Clarifai.COLOR_MODEL,
-      "https://samples.clarifai.com/metro-north.jpg")
+      Clarifai.FACE_DETECT_MODEL,
+      this.state.input)
       .then(function(response) {
       // do something with response
-        console.log(response)
+        console.log("this is the response", response.output[0].data.regions[0])
     },
     err => {
       // there was an error
@@ -63,7 +64,9 @@ class App extends Component {
         <Particles className="particles"
           params={particleOptions}/>
         <Navagation />
+        <Signin />
         <Logo />
+        
         <User />
         <ImageLinkForm onInputChange={this.onInputChange} onSubmit={this.onSubmit}/>
        <FaceRecognition  imageUrl={this.state.imageUrl}/>
