@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React, { Component , useState} from 'react';
 import './CSS/App.css';
 import Clarifai from 'clarifai';
 import Navagation from './components/Navigation';
@@ -25,41 +25,39 @@ const app = new Clarifai.App({
   apiKey: 'a716a8ef2bdf4456a0a86eaf1e26a90d',
 });
 
-class App extends Component {
-  constructor() {
-    super();
-    this.state = {
-      input: '',
-      imageUrl: '',
-    };
-  }
+// class App extends Component {
+//   constructor() {
+//     super();
+//     this.state = {
+//       input: '',
+//       imageUrl: '',
+//     };
+//   }
 
-  onInputChange = e => {
-    this.setState({
-      input: e.target.value,
-    });
-    console.log(this.state);
+  const App = () => {
+  
+    const [input, setInput] = useState("")
+    const [img, setImg] = useState("")
+
+   const onInputChange = e => {
+      const input = e.target.value
+    setInput(input)
+
   };
 
-  onSubmit = async () => {
-    try {
-      const {input} = this.state
-    this.setState({ imageUrl: input });
+    const onSubmit = async () => {
+     setImg(input)
     const response = await app.models.predict(Clarifai.FACE_DETECT_MODEL, input)
         // do something with response
       console.log('this is the response', response)
      console.log(response.outputs[0].data.regions[0].region_info.bounding_box)
-    }
-    catch(err){
-      console.log("this error",err)
-    }
+   
     
     
       // .outputs[0].data.regions.regions_info.bounding_box);
      
     
   };
-  render() {
     return (
       <div className="App">
         <Particles className="particles" params={particleOptions} />
@@ -70,11 +68,16 @@ class App extends Component {
         <Signin />
 
         <User />
-        <ImageLinkForm onInputChange={this.onInputChange} onSubmit={this.onSubmit} />
-        <FaceRecognition imageUrl={this.state.imageUrl} />
+
+
+        <ImageLinkForm
+          onInputChange={onInputChange}
+          onSubmit={onSubmit} />
+
+
+        <FaceRecognition img={img} />
       </div>
     );
-  }
 }
 
 export default App;
