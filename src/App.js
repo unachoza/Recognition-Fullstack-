@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React, { useState } from 'react';
 import './CSS/App.css';
 import Clarifai from 'clarifai';
 import Navagation from './components/Navigation';
@@ -25,56 +25,59 @@ const app = new Clarifai.App({
   apiKey: 'a716a8ef2bdf4456a0a86eaf1e26a90d',
 });
 
-class App extends Component {
-  constructor() {
-    super();
-    this.state = {
-      input: '',
-      imageUrl: '',
-    };
-  }
+const App = () => {
+  const [box, setBox] = useState({});
+  const [input, setInput] = useState('');
+  const [img, setImg] = useState('');
 
-  onInputChange = e => {
-    this.setState({
-      input: e.target.value,
-    });
-    console.log(this.state);
+  const onInputChange = e => {
+    const input = e.target.value;
+    setInput(input);
   };
 
-  onSubmit = async () => {
-    try {
-      const {input} = this.state
-    this.setState({ imageUrl: input });
-    const response = await app.models.predict(Clarifai.FACE_DETECT_MODEL, input)
-        // do something with response
-      console.log('this is the response', response)
-     console.log(response.outputs[0].data.regions[0].region_info.bounding_box)
-    }
-    catch(err){
-      console.log("this error",err)
-    }
-    
-    
-      // .outputs[0].data.regions.regions_info.bounding_box);
-     
+  const onSubmit = async () => {
+    setImg(input);
+    const response = await app.models.predict(Clarifai.FACE_DETECT_MODEL, input);
+    const data = response.outputs[0].data.regions[0].region_info.bounding_box
+    displayFaceBox(calculateFaceBox(data))
     
   };
-  render() {
-    return (
-      <div className="App">
-        <Particles className="particles" params={particleOptions} />
-        <Logo />
 
-        <Navagation />
+  const calculateFaceBox = (data) => {
+    console.log(data)
+    const clarifaiFace = document.getElementById('imageInput')
+    console.log(clarifaiFace)
+    const width = Number(clarifaiFace.width)
+    const height = Number(clarifaiFace.height)
+    console.log(width, height)
+    return {
+      leftCol: data.left_col * width,
+      topRow: data.top_row * height,
+      rightCol: width -  (data.right_col * width),
+      bottomRow: height - (data.bottom_row * height)
+    }
 
-        <Signin />
-
-        <User />
-        <ImageLinkForm onInputChange={this.onInputChange} onSubmit={this.onSubmit} />
-        <FaceRecognition imageUrl={this.state.imageUrl} />
-      </div>
-    );
   }
-}
+  const displayFaceBox = (box) => {
+    console.log(box)
+    setBox(box)
+  }
+  return (
+    <div className="App">
+      <Particles className="particles" params={particleOptions} />
+      <Logo />
+
+      <Navagation />
+
+      <Signin />
+
+      <User />
+
+      <ImageLinkForm onInputChange={onInputChange} onSubmit={onSubmit} />
+
+      <FaceRecognition img={img} box={box} />
+    </div>
+  );
+};
 
 export default App;
