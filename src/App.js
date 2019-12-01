@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import './App.css';
+import './CSS/App.css'
 import Clarifai from 'clarifai'
 import Navagation from './components/Navigation'
 import ImageLinkForm from './components/ImageLinkForm'
@@ -62,10 +62,12 @@ class App extends Component {
     return (
       <div className="App">
         <Particles className="particles"
-          params={particleOptions}/>
-        <Navagation />
-        <Signin />
+          params={particleOptions} />
         <Logo />
+        
+        <Navagation />
+
+        <Signin />
         
         <User />
         <ImageLinkForm onInputChange={this.onInputChange} onSubmit={this.onSubmit}/>
