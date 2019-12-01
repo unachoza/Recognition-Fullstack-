@@ -42,11 +42,20 @@ class App extends Component {
   };
 
   onSubmit = async () => {
-    this.setState({ imageUrl: this.state.input });
-    const response = await app.models.predict(Clarifai.FACE_DETECT_MODEL, this.state.input)
+    try {
+      const {input} = this.state
+    this.setState({ imageUrl: input });
+    const response = await app.models.predict(Clarifai.FACE_DETECT_MODEL, input)
         // do something with response
-    console.log('this is the response', response)
-      // .output[0].data.regions[0]);
+      console.log('this is the response', response)
+     console.log(response.outputs[0].data.regions[0].region_info.bounding_box)
+    }
+    catch(err){
+      console.log("this error",err)
+    }
+    
+    
+      // .outputs[0].data.regions.regions_info.bounding_box);
      
     
   };
