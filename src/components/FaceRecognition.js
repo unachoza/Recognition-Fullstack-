@@ -4,7 +4,10 @@ const FaceRecognition = ({ imageUrl }) => {
     console.log('check', imageUrl)
     return (
         <div className="center">
-            <img alt="" src={imageUrl}/>
+            <div className="absolute mt2">
+            <img alt="" src={imageUrl} width="500px" height="auto"/>
+
+            </div>
         </div>
     )
 }
