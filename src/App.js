@@ -30,12 +30,13 @@ const App = () => {
   const [box, setBox] = useState({});
   const [input, setInput] = useState('');
   const [img, setImg] = useState('');
+  const [route, setRoute] = useState('signin');
+  const [isSignedIn, setIsSignedIn] = useState(false)
 
   const onInputChange = e => {
     const input = e.target.value;
     setInput(input);
   };
-  const [route, setRoute] = useState('signin');
 
   const onSubmit = async () => {
     setImg(input);
@@ -65,12 +66,13 @@ const App = () => {
   const onRouteChange = route => {
     setRoute(route);
   };
+  console.log(route)
   return (
     <div className="App">
       <Particles className="particles" params={particleOptions} />
       <Logo />
 
-      <Navagation onRouteChange={onRouteChange} />
+      <Navagation onRouteChange={onRouteChange} route={route}isSignedIn={isSignedIn}/>
 
       {route === 'home' ? (
         <div>
@@ -88,7 +90,7 @@ const App = () => {
         )
           :
           
-          <Register />
+          <Register onRouteChange={onRouteChange}/>
     }
     </div>
   );

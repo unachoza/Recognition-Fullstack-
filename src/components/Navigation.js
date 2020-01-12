@@ -1,10 +1,16 @@
 import React from 'react' 
 
-const Navagation = ({onRouteChange}) => {
+const Navagation = ({onRouteChange, isSignedIn, route}) => {
     return (
-        <div style={{ display: "flex", justifyContent: 'flex-end', alignItems: 'center'}}>
+        route === "home" ? 
+        <nav style={{ display: "flex", justifyContent: 'flex-end', alignItems: 'center'}}>
             <p onClick={() => onRouteChange('signin')}className="f3 link dim  underline pa3 pointer">Sign Out</p>
-        </div>
+            </nav>
+            :
+            <nav style={{ display: "flex", justifyContent: 'flex-end', alignItems: 'center'}}>
+                <p onClick={() => onRouteChange('signin')} className="f3 link dim  underline pa3 pointer">Sign In</p>
+                <p onClick={() => onRouteChange('register')}className="f3 link dim  underline pa3 pointer">Register</p>
+            </nav>
     )
 }
 
