@@ -9,6 +9,7 @@ import FaceRecognition from './components/FaceRecognition';
 import Signin from './components/Signin';
 import Particles from 'react-particles-js';
 import 'tachyons';
+import Register from './components/Register'
 
 const particleOptions = {
   particles: {
@@ -34,48 +35,61 @@ const App = () => {
     const input = e.target.value;
     setInput(input);
   };
+  const [route, setRoute] = useState('signin');
 
   const onSubmit = async () => {
     setImg(input);
     const response = await app.models.predict(Clarifai.FACE_DETECT_MODEL, input);
-    const data = response.outputs[0].data.regions[0].region_info.bounding_box
-    displayFaceBox(calculateFaceBox(data))
-    
+    const data = response.outputs[0].data.regions[0].region_info.bounding_box;
+    displayFaceBox(calculateFaceBox(data));
   };
 
-  const calculateFaceBox = (data) => {
-    console.log(data)
-    const clarifaiFace = document.getElementById('imageInput')
-    console.log(clarifaiFace)
-    const width = Number(clarifaiFace.width)
-    const height = Number(clarifaiFace.height)
-    console.log(width, height)
+  const calculateFaceBox = data => {
+    console.log('calculate facebox function', data);
+    const clarifaiFace = document.getElementById('imageInput');
+    console.log('the imgurl', clarifaiFace);
+    const width = Number(clarifaiFace.width);
+    const height = Number(clarifaiFace.height);
+    console.log(width, height);
     return {
       leftCol: data.left_col * width,
       topRow: data.top_row * height,
-      rightCol: width -  (data.right_col * width),
-      bottomRow: height - (data.bottom_row * height)
-    }
-
-  }
-  const displayFaceBox = (box) => {
-    console.log(box)
-    setBox(box)
-  }
+      rightCol: width - data.right_col * width,
+      bottomRow: height - data.bottom_row * height,
+    };
+  };
+  const displayFaceBox = box => {
+    console.log(box);
+    setBox(box);
+  };
+  const onRouteChange = route => {
+    setRoute(route);
+  };
   return (
     <div className="App">
       <Particles className="particles" params={particleOptions} />
       <Logo />
 
-      <Navagation />
+      <Navagation onRouteChange={onRouteChange} />
 
-      <Signin />
+      {route === 'home' ? (
+        <div>
+        <ImageLinkForm onInputChange={onInputChange} onSubmit={onSubmit} />
 
-      <User />
-
-      <ImageLinkForm onInputChange={onInputChange} onSubmit={onSubmit} />
-
-      <FaceRecognition img={img} box={box} />
+        <FaceRecognition img={img} box={box} />
+      </div>
+        
+      )
+        : route === 'signin' ? (
+        <div>
+          <Signin onRouteChange={onRouteChange} />
+          <User />
+        </div>
+        )
+          :
+          
+          <Register />
+    }
     </div>
   );
 };
