@@ -9,7 +9,7 @@ import FaceRecognition from './components/FaceRecognition';
 import Signin from './components/Signin';
 import Particles from 'react-particles-js';
 import 'tachyons';
-import Register from './components/Register'
+import Register from './components/Register';
 
 const particleOptions = {
   particles: {
@@ -31,7 +31,7 @@ const App = () => {
   const [input, setInput] = useState('');
   const [img, setImg] = useState('');
   const [route, setRoute] = useState('signin');
-  const [isSignedIn, setIsSignedIn] = useState(false)
+  const [isSignedIn, setIsSignedIn] = useState(false);
 
   const onInputChange = e => {
     const input = e.target.value;
@@ -40,18 +40,19 @@ const App = () => {
 
   const onSubmit = async () => {
     setImg(input);
-    const response = await app.models.predict(Clarifai.FACE_DETECT_MODEL, input);
-    const data = response.outputs[0].data.regions[0].region_info.bounding_box;
-    displayFaceBox(calculateFaceBox(data));
+    try {
+      const response = await app.models.predict(Clarifai.FACE_DETECT_MODEL, input);
+      const data = response.outputs[0].data.regions[0].region_info.bounding_box;
+      displayFaceBox(calculateFaceBox(data));
+    } catch (error) {
+      console.log(error);
+    }
   };
 
   const calculateFaceBox = data => {
-    console.log('calculate facebox function', data);
     const clarifaiFace = document.getElementById('imageInput');
-    console.log('the imgurl', clarifaiFace);
     const width = Number(clarifaiFace.width);
     const height = Number(clarifaiFace.height);
-    console.log(width, height);
     return {
       leftCol: data.left_col * width,
       topRow: data.top_row * height,
@@ -66,32 +67,28 @@ const App = () => {
   const onRouteChange = route => {
     setRoute(route);
   };
-  console.log(route)
+  console.log(route);
   return (
     <div className="App">
       <Particles className="particles" params={particleOptions} />
       <Logo />
 
-      <Navagation onRouteChange={onRouteChange} route={route}isSignedIn={isSignedIn}/>
+      <Navagation onRouteChange={onRouteChange} route={route} isSignedIn={isSignedIn} />
 
       {route === 'home' ? (
         <div>
-        <ImageLinkForm onInputChange={onInputChange} onSubmit={onSubmit} />
+          <ImageLinkForm onInputChange={onInputChange} onSubmit={onSubmit} />
 
-        <FaceRecognition img={img} box={box} />
-      </div>
-        
-      )
-        : route === 'signin' ? (
+          <FaceRecognition img={img} box={box} />
+        </div>
+      ) : route === 'signin' ? (
         <div>
           <Signin onRouteChange={onRouteChange} />
           <User />
         </div>
-        )
-          :
-          
-          <Register onRouteChange={onRouteChange}/>
-    }
+      ) : (
+        <Register onRouteChange={onRouteChange} />
+      )}
     </div>
   );
 };
