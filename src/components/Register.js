@@ -22,8 +22,7 @@ class Register extends Component {
       }),
     }).then((res => res.json()))
       .then((res) => {
-        let data = res
-        this.props.loadUser(data)
+        this.props.loadUser(res)
       })
     this.props.onRouteChange("signin")
     

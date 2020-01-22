@@ -10,32 +10,21 @@ class Signin extends Component {
     };
   }
 
-  componentDidMount = () => {
-    console.log('this');
-    fetch('http://localhost:3000/').then(res => {
-      console.log(res, 'yeah');
-    });
-  };
-
-  onSubmit = () => {
+  onSubmit = async () => {
     console.log(this.state);
     const { email, password } = this.state;
-    fetch('http://localhost:3000/signin', {
+   let res = await fetch('http://localhost:3000/signin', {
       method: 'post',
       headers: { 'Content-type': 'application/json' },
       body: JSON.stringify({
         email: email,
         password: password,
       }),
-    })
-      .then(res => res.json())
-      .then(user => {
-        // console.log(req.body)
-        if (user) {
-          this.props.loadUser(user)
-          this.props.onRouteChange('home');
-        }
-      })
+   })
+    res = await res.json()
+    this.props.loadUser(res)
+      this.props.onRouteChange('home');
+     
        
   };
   handleInput = event => {
