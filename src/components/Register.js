@@ -9,30 +9,25 @@ class Register extends Component {
       password: '',
     };
   }
-  onSubmit = () => {
-    console.log(this.state);
+  onSubmit = async () => {
     const { email, password, name } = this.state;
-    fetch('http://localhost:3000/register', {
+    let res = await fetch('http://localhost:3000/register', {
       method: 'POST',
       headers: { 'Content-type': 'application/json' },
       body: JSON.stringify({
-        name: name,
-        email: email,
-        password: password,
+        name,
+        email,
+        password,
       }),
-    }).then((res => res.json()))
-      .then((res) => {
-        this.props.loadUser(res)
-      })
-    this.props.onRouteChange("signin")
-    
+    })
+      res = await res.json()
+        this.props.loadUser(res);
+    this.props.onRouteChange('signin');
   };
 
   handleInput = event => {
     const { value, name } = event.target;
-
     this.setState({ [name]: value });
-    console.log(this.state);
   };
 
   render() {

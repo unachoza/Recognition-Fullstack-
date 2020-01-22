@@ -43,14 +43,6 @@ class App extends Component {
     };
   }
 
-
-  componentDidMount  =  () => {
-    fetch('http://localhost:3000/')
-      .then(response => response.json())
-    .then(console.log)
-      
-  }
-
   loadUser = (newUser) => {
     console.log(newUser)
     this.setState({user:{
@@ -59,19 +51,25 @@ class App extends Component {
         password: newUser.password,
     }
     })
-    console.log(this.state)
   }
 
   onInputChange = e => {
+    
     const input = e.target.value;
+    console.log(input)
     this.setState({ input });
+    console.log(this.state)
   };
 
   onSubmit = async () => {
+    console.log('clicked')
     const { input } = this.state;
+    console.log(input)
     try {
       const response = await app.models.predict(Clarifai.FACE_DETECT_MODEL, input);
-      const data = response.outputs[0].data.regions[0].region_info.bounding_box;
+      console.log(response)
+      const data = await response.outputs[0].data.regions[0].region_info.bounding_box;
+      console.log(data)
       this.displayFaceBox(this.calculateFaceBox(data));
     } catch (error) {
       console.log(error);
@@ -79,26 +77,35 @@ class App extends Component {
   };
 
   calculateFaceBox = data => {
-    const clarifaiFace = document.getElementById('imageInput');
-    const width = Number(clarifaiFace.width);
-    const height = Number(clarifaiFace.height);
-    return {
+    console.log(data)
+    let box
+    const image = document.getElementById('imageInput').width
+    console.log(image)
+    console.log(Number(image.attributes))
+    const width = Number(image.width);
+    const height = Number(image.height);
+    console.log(width, height, "asl", data.left_col)
+     box = {
       leftCol: data.left_col * width,
       topRow: data.top_row * height,
       rightCol: width - data.right_col * width,
       bottomRow: height - data.bottom_row * height,
-    };
+     };
+    console.log(box)
+
   };
   displayFaceBox = box => {
     console.log(box);
-    this.setState({ box });
+    this.setState({ box :{
+box
+    } });
   };
   onRouteChange = route => {
     this.setState({ route });
   };
 
   render() {
-    const { route, box, img, isSignedIn } = this.state;
+    const { route, box, input, isSignedIn } = this.state;
     return (
       <div className="App">
         <Particles className="particles" params={particleOptions} />
@@ -108,9 +115,9 @@ class App extends Component {
 
         {route === 'home' ? (
           <div>
-            <ImageLinkForm onInputChange={this.onInputChange} onSubmit={this.onSubmit} />
+            <ImageLinkForm onInputChange={this.onInputChange} input={this.state.input} onSubmit={this.onSubmit} />
 
-            <FaceRecognition img={img} box={box} />
+            <FaceRecognition img={input} box={box} />
           </div>
         ) : route === 'signin' ? (
           <div>
