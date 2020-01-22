@@ -28,25 +28,30 @@ const app = new Clarifai.App({
 
 class App extends Component {
   constructor() {
-    super()
+    super();
     this.state = {
-      box: "",
-  input : "", 
-  img : "",
-  route : "", 
-    isSignedIn : "", 
-  
-
-    }
+      box: '',
+      input: '',
+      img: '',
+      route: '',
+      isSignedIn: '',
+    };
   }
-  
+  componentDidMount  =  () => {
+    fetch('http://localhost:3000/')
+      .then(response => response.json())
+    .then(console.log)
+      
+  }
+
+
   onInputChange = e => {
     const input = e.target.value;
-    this.setState({input});
+    this.setState({ input });
   };
 
   onSubmit = async () => {
-    const {input} =this.state
+    const { input } = this.state;
     try {
       const response = await app.models.predict(Clarifai.FACE_DETECT_MODEL, input);
       const data = response.outputs[0].data.regions[0].region_info.bounding_box;
@@ -56,7 +61,7 @@ class App extends Component {
     }
   };
 
-   calculateFaceBox = data => {
+  calculateFaceBox = data => {
     const clarifaiFace = document.getElementById('imageInput');
     const width = Number(clarifaiFace.width);
     const height = Number(clarifaiFace.height);
@@ -67,26 +72,26 @@ class App extends Component {
       bottomRow: height - data.bottom_row * height,
     };
   };
-   displayFaceBox = box => {
+  displayFaceBox = box => {
     console.log(box);
-    this.setState({box});
+    this.setState({ box });
   };
-   onRouteChange = route => {
-    this.setState({route});
-   };
+  onRouteChange = route => {
+    this.setState({ route });
+  };
   render() {
-    const {route, box, img, isSignedIn} = this.state
+    const { route, box, img, isSignedIn } = this.state;
     return (
       <div className="App">
         <Particles className="particles" params={particleOptions} />
         <Logo />
-  
+
         <Navagation onRouteChange={this.onRouteChange} route={route} isSignedIn={isSignedIn} />
-  
+
         {route === 'home' ? (
           <div>
             <ImageLinkForm onInputChange={this.onInputChange} onSubmit={this.onSubmit} />
-  
+
             <FaceRecognition img={img} box={box} />
           </div>
         ) : route === 'signin' ? (
@@ -100,7 +105,6 @@ class App extends Component {
       </div>
     );
   }
-  
-};
+}
 
 export default App;
