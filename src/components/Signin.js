@@ -9,25 +9,36 @@ class Signin extends Component {
     };
   }
 
-  onSubmit() {
+  componentDidMount = () => {
+    console.log('this')
+    fetch('http://localhost:3000/').then(res => {
+      console.log(res, 'yeah');
+    });
+  };
+
+  onSubmit = () => {
     console.log(this.state);
     const { email, password } = this.state;
-    fetch('http://localhost:3000/singin', {
+    fetch('http://localhost:3000/signin', {
       method: 'post',
-      header: { 'Content-type': 'application/json' },
+      headers: { 'Content-type': 'application/json' },
       body: JSON.stringify({
-        email,
-        password,
+        email: email,
+        password: password,
       }),
-    });
-    this.props.onRouteChange('home');
-  }
-  handleInput = (event) => {
+    })
+    
+      .then(console.log)
+    // .then(err => console.log(err.message))
+    // this.props.onRouteChange('home');
+  };
+  handleInput = event => {
     console.log(event.target.value, event.target.name);
 
     const { value, name } = event.target;
     this.setState({ [name]: value });
-  }
+    console.log(this.state);
+  };
 
   render() {
     const { email, password } = this.state;
@@ -70,7 +81,7 @@ class Signin extends Component {
                 className="b ph3 pv2 input-reset ba b--black bg-transparent grow pointer f6 dib"
                 type="submit"
                 value="Sign in"
-                onClick={() => onRouteChange('home')}
+                onClick={this.onSubmit}
               />
             </div>
             <div className="lh-copy mt3">

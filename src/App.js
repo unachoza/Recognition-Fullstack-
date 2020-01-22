@@ -1,4 +1,4 @@
-import React, { useState, Component } from 'react';
+import React, {  Component } from 'react';
 import './CSS/App.css';
 import Clarifai from 'clarifai';
 import Navagation from './components/Navigation';
@@ -35,8 +35,15 @@ class App extends Component {
       img: '',
       route: '',
       isSignedIn: '',
+      user : {
+        name: '',
+        email: '',
+        password: '',
+      }
     };
   }
+
+
   componentDidMount  =  () => {
     fetch('http://localhost:3000/')
       .then(response => response.json())
@@ -44,6 +51,16 @@ class App extends Component {
       
   }
 
+  loadUser = (newUser) => {
+    console.log(newUser)
+    this.setState({user:{
+      name: newUser.name,
+        email: newUser.email,
+        password: newUser.password,
+    }
+    })
+    console.log(this.state)
+  }
 
   onInputChange = e => {
     const input = e.target.value;
@@ -79,6 +96,7 @@ class App extends Component {
   onRouteChange = route => {
     this.setState({ route });
   };
+
   render() {
     const { route, box, img, isSignedIn } = this.state;
     return (
@@ -100,7 +118,7 @@ class App extends Component {
             <User />
           </div>
         ) : (
-          <Register onRouteChange={this.onRouteChange} />
+              <Register onRouteChange={this.onRouteChange} loadUser={this.loadUser}/>
         )}
       </div>
     );
