@@ -25,6 +25,7 @@ class Register extends Component {
         let data = res
         this.props.loadUser(data)
       })
+    this.props.onRouteChange("signin")
     
   };
 

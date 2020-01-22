@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import { CONNREFUSED } from 'dns';
 
 class Signin extends Component {
   constructor(props) {
@@ -10,7 +11,7 @@ class Signin extends Component {
   }
 
   componentDidMount = () => {
-    console.log('this')
+    console.log('this');
     fetch('http://localhost:3000/').then(res => {
       console.log(res, 'yeah');
     });
@@ -27,13 +28,17 @@ class Signin extends Component {
         password: password,
       }),
     })
-    
-      .then(console.log)
-    // .then(err => console.log(err.message))
-    // this.props.onRouteChange('home');
+      .then(res => res.json())
+      .then(user => {
+        // console.log(req.body)
+        if (user) {
+          this.props.loadUser(user)
+          this.props.onRouteChange('home');
+        }
+      })
+       
   };
   handleInput = event => {
-    console.log(event.target.value, event.target.name);
 
     const { value, name } = event.target;
     this.setState({ [name]: value });

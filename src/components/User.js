@@ -1,10 +1,11 @@
 import React from 'react' 
 
-const User = () => {
+const User = ({ user }) => {
+    console.log(user)
     return (
         <div>
             <div>
-                {'Arianna you\'re signed in'}
+                {`${user.name} you\'re signed in'`}
             </div>
         </div>
     )
