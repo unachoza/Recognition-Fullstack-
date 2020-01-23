@@ -35,20 +35,25 @@ class App extends Component {
       route: '',
       isSignedIn: '',
       user: {
+        id: '',
         name: '',
         email: '',
         password: '',
+        entries: '',
       },
     };
   }
 
   loadUser = newUser => {
     console.log(newUser);
+    const { name, password, email, entries, id } = newUser;
     this.setState({
       user: {
-        name: newUser.name,
-        email: newUser.email,
-        password: newUser.password,
+        id,
+        name,
+        email,
+        password,
+        entries,
       },
     });
   };
@@ -60,12 +65,25 @@ class App extends Component {
     console.log(this.state);
   };
 
-  onSubmit = async () => {
-    console.log('clicked');
-    const { input } = this.state;
-    console.log(input);
+  onPictureSubmit = async () => {
+    const { input, user } = this.state;
+console.log(this.state)
     try {
       const response = await app.models.predict(Clarifai.FACE_DETECT_MODEL, input);
+      if (response) {
+        console.log(user.id)
+        let countUpdate = await fetch('http://localhost:3000/image', {
+          method: 'PUT',
+          headers: { 'Content-type': 'application/json' },
+          body: JSON.stringify({
+            id: user.id,
+          }),
+        });
+        countUpdate = await countUpdate.json();
+        console.log(countUpdate);
+        this.setState(Object.assign(user, { entries: countUpdate }));
+      }
+
       console.log(response);
       const data = await response.outputs[0].data.regions[0].region_info.bounding_box;
       console.log(data);
@@ -78,7 +96,7 @@ class App extends Component {
 
   calculateFaceBox = data => {
     console.log(data);
-    let box;
+    // let box;
     const image = document.getElementById('imageInput');
     const width = image.width;
     const height = image.height;
@@ -113,7 +131,11 @@ class App extends Component {
         {route === 'home' ? (
           <div>
             <div>
-              <ImageLinkForm onInputChange={this.onInputChange} input={this.state.input} onSubmit={this.onSubmit} />
+              <ImageLinkForm
+                onInputChange={this.onInputChange}
+                input={this.state.input}
+                onSubmit={this.onPictureSubmit}
+              />
             </div>
             <div>
               <FaceRecognition img={input} box={box} />
