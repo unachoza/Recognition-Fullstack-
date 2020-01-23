@@ -7,7 +7,7 @@ import Logo from './components/Logo';
 import User from './components/User';
 import FaceRecognition from './components/FaceRecognition';
 import Signin from './components/Signin';
-import Rank from './components/Rank'
+import Rank from './components/Rank';
 import Particles from 'react-particles-js';
 import 'tachyons';
 import Register from './components/Register';
@@ -37,13 +37,13 @@ const INITIAL_STATE = {
     email: '',
     password: '',
     entries: 0,
-  }
-}
+  },
+};
 
 class App extends Component {
   constructor() {
     super();
-    this.state = INITIAL_STATE 
+    this.state = INITIAL_STATE;
   }
 
   loadUser = newUser => {
@@ -59,6 +59,7 @@ class App extends Component {
       },
     });
   };
+  componentDidMount = () => console.log("is sometone logged in", this.state.user.name.length)
 
   onInputChange = e => {
     const input = e.target.value;
@@ -69,11 +70,11 @@ class App extends Component {
 
   onPictureSubmit = async () => {
     const { input, user } = this.state;
-console.log(this.state)
+    console.log(this.state);
     try {
       const response = await app.models.predict(Clarifai.FACE_DETECT_MODEL, input);
       if (response) {
-        console.log(user.id)
+        console.log(user.id);
         let countUpdate = await fetch('http://localhost:3000/image', {
           method: 'PUT',
           headers: { 'Content-type': 'application/json' },
@@ -122,25 +123,20 @@ console.log(this.state)
   };
 
   render() {
-    const { route, box, input, isSignedIn } = this.state;
+    const { route, box, input, isSignedIn, user } = this.state;
+    const { onRouteChange, onInputChange, onPictureSubmit, loadUser } = this;
+
     return (
       <div className="App">
         <Particles className="particles" params={particleOptions} />
         <Logo />
 
-        <Navagation onRouteChange={this.onRouteChange} route={route} isSignedIn={isSignedIn} />
-        <Rank
-                name={this.state.user.name}
-                entries={this.state.user.entries}
-              />
+        <Navagation onRouteChange={onRouteChange} route={route} isSignedIn={isSignedIn} />
+        {user.name.length > 0 && <Rank name={user.name} entries={user.entries} />}
         {route === 'home' ? (
           <div>
             <div>
-              <ImageLinkForm
-                onInputChange={this.onInputChange}
-                input={this.state.input}
-                onSubmit={this.onPictureSubmit}
-              />
+              <ImageLinkForm onInputChange={onInputChange} input={input} onSubmit={onPictureSubmit} />
             </div>
             <div>
               <FaceRecognition img={input} box={box} />
@@ -148,11 +144,11 @@ console.log(this.state)
           </div>
         ) : route === 'signin' ? (
           <div>
-            <Signin onRouteChange={this.onRouteChange} user={this.state.user} loadUser={this.loadUser} />
-            <User user={this.state.user} />
+            <Signin onRouteChange={onRouteChange} user={user} loadUser={loadUser} />
+            {user.name.length > 0 && <User user={user} />}
           </div>
         ) : (
-          <Register onRouteChange={this.onRouteChange} loadUser={this.loadUser} />
+          <Register onRouteChange={onRouteChange} loadUser={loadUser} />
         )}
       </div>
     );

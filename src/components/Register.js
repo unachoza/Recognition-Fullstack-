@@ -12,7 +12,7 @@ class Register extends Component {
   }
   onSubmit = async () => {
     const { loadUser, onRouteChange } = this.props;
-    const { email, password, name, error } = this.state;
+    const { email, password, name } = this.state;
     let res = await fetch('http://localhost:3000/register', {
       method: 'POST',
       headers: { 'Content-type': 'application/json' },
@@ -27,8 +27,9 @@ class Register extends Component {
      this.setState({error: res.detail}) 
     } else {
       loadUser(res[0]);
-      onRouteChange('signin');
+      onRouteChange('home');
     }
+    console.log(this.state)
   };
 
   handleInput = event => {
