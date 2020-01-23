@@ -7,6 +7,7 @@ import Logo from './components/Logo';
 import User from './components/User';
 import FaceRecognition from './components/FaceRecognition';
 import Signin from './components/Signin';
+import Rank from './components/Rank'
 import Particles from 'react-particles-js';
 import 'tachyons';
 import Register from './components/Register';
@@ -127,7 +128,10 @@ console.log(this.state)
         <Logo />
 
         <Navagation onRouteChange={this.onRouteChange} route={route} isSignedIn={isSignedIn} />
-
+        <Rank
+                name={this.state.user.name}
+                entries={this.state.user.entries}
+              />
         {route === 'home' ? (
           <div>
             <div>
