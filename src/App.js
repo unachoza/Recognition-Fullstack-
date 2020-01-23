@@ -1,6 +1,5 @@
 import React, { Component } from 'react';
 import './CSS/App.css';
-import Clarifai from 'clarifai';
 import Navagation from './components/Navigation';
 import ImageLinkForm from './components/ImageLinkForm';
 import Logo from './components/Logo';
@@ -23,9 +22,7 @@ const particleOptions = {
   },
 };
 
-const app = new Clarifai.App({
-  apiKey: 'a716a8ef2bdf4456a0a86eaf1e26a90d',
-});
+
 const INITIAL_STATE = {
   box: '',
   input: '',
@@ -69,8 +66,16 @@ class App extends Component {
 
   onPictureSubmit = async () => {
     const { input, user } = this.state;
+   let response = await fetch('http://localhost:3000/imageurl', {
+        method: 'post',
+        headers: {'Content-Type': 'application/json'},
+        body: JSON.stringify({
+           input
+        })
+      })
+    response = await response.json()
+    console.log(response)
     try {
-      const response = await app.models.predict(Clarifai.FACE_DETECT_MODEL, input);
       console.log(response.outputs[0].data.regions);
       console.log(response.outputs[0].data.regions === undefined);
       if (response.outputs[0].data.regions === undefined) {
