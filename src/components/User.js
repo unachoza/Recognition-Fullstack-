@@ -4,7 +4,7 @@ const User = ({ user }) => {
     return (
         <div>
             <div>
-                {`${user.name} you\'re signed in'`}
+                {`${user.name} you are signed in'`}
             </div>
         </div>
     )

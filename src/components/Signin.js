@@ -1,5 +1,4 @@
 import React, { Component } from 'react';
-import { CONNREFUSED } from 'dns';
 
 class Signin extends Component {
   constructor(props) {
@@ -20,11 +19,12 @@ class Signin extends Component {
         password: password,
       }),
     });
+
     res = await res.json();
     this.props.loadUser(res);
     this.props.onRouteChange('home');
   };
-  
+
   handleInput = event => {
     const { value, name } = event.target;
     this.setState({ [name]: value });
