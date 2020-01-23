@@ -20,8 +20,10 @@ class Register extends Component {
         password,
       }),
     })
-      res = await res.json()
-        this.props.loadUser(res);
+    res = await res.json()
+    console.log(res)
+    console.log(res[0])
+        this.props.loadUser(res[0]);
     this.props.onRouteChange('signin');
   };
 

@@ -26,23 +26,24 @@ const particleOptions = {
 const app = new Clarifai.App({
   apiKey: 'a716a8ef2bdf4456a0a86eaf1e26a90d',
 });
+const INITIAL_STATE = {
+  box: '',
+  input: '',
+  route: '',
+  isSignedIn: '',
+  user: {
+    id: '',
+    name: '',
+    email: '',
+    password: '',
+    entries: 0,
+  }
+}
 
 class App extends Component {
   constructor() {
     super();
-    this.state = {
-      box: '',
-      input: '',
-      route: '',
-      isSignedIn: '',
-      user: {
-        id: '',
-        name: '',
-        email: '',
-        password: '',
-        entries: '',
-      },
-    };
+    this.state = INITIAL_STATE 
   }
 
   loadUser = newUser => {
