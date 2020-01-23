@@ -24,7 +24,7 @@ class Register extends Component {
     });
     res = await res.json();
     if (res.name === 'error') {
-     this.setState({error: res.detail}) 
+     this.setState({error: "User email already taken"}) 
     } else {
       loadUser(res[0]);
       onRouteChange('home');

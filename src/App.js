@@ -31,6 +31,7 @@ const INITIAL_STATE = {
   input: '',
   route: '',
   isSignedIn: '',
+  noFace: null,
   user: {
     id: '',
     name: '',
@@ -59,7 +60,7 @@ class App extends Component {
       },
     });
   };
-  componentDidMount = () => console.log("is sometone logged in", this.state.user.name.length)
+  componentDidMount = () => console.log('is sometone logged in', this.state.user.name.length);
 
   onInputChange = e => {
     const input = e.target.value;
@@ -73,7 +74,12 @@ class App extends Component {
     console.log(this.state);
     try {
       const response = await app.models.predict(Clarifai.FACE_DETECT_MODEL, input);
-      if (response) {
+      console.log(response.outputs[0].data.regions);
+      console.log(response.outputs[0].data.regions === undefined);
+      if (response.outputs[0].data.regions === undefined) {
+        this.setState({ noFace: true });
+        return this.state;
+      } else {
         console.log(user.id);
         let countUpdate = await fetch('http://localhost:3000/image', {
           method: 'PUT',
@@ -91,6 +97,7 @@ class App extends Component {
       const data = await response.outputs[0].data.regions[0].region_info.bounding_box;
       console.log(data);
       this.displayFaceBox(this.calculateFaceBox(data));
+      this.setState({ noFace: false });
       console.log(this.state);
     } catch (error) {
       console.log(error);
@@ -123,8 +130,9 @@ class App extends Component {
   };
 
   render() {
-    const { route, box, input, isSignedIn, user } = this.state;
+    const { route, box, input, isSignedIn, user, noFace } = this.state;
     const { onRouteChange, onInputChange, onPictureSubmit, loadUser } = this;
+    console.log(this.state);
 
     return (
       <div className="App">
@@ -136,11 +144,16 @@ class App extends Component {
         {route === 'home' ? (
           <div>
             <div>
-              <ImageLinkForm onInputChange={onInputChange} input={input} onSubmit={onPictureSubmit} />
+              <div>
+                <ImageLinkForm onInputChange={onInputChange} input={input} onSubmit={onPictureSubmit} />
+              </div>
+              {noFace && <h1>No face is present in this photo</h1>}
+
+              <div>
+                <FaceRecognition img={input} box={box} />
+              </div>
             </div>
-            <div>
-              <FaceRecognition img={input} box={box} />
-            </div>
+
           </div>
         ) : route === 'signin' ? (
           <div>
