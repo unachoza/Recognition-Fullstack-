@@ -30,7 +30,7 @@ class Register extends Component {
       loadUser(res);
       onRouteChange('home');
     }
-    console.log(this.state)
+    // console.log(this.state)
   };
 
   handleInput = event => {

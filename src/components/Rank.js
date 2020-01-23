@@ -4,11 +4,9 @@ const Rank = ({ name, entries }) => {
   return (
     <div>
       <div className='white f3'>
-        {`${name.toUpperCase()} , your current entry count is...`}
+        {`${name.toUpperCase()} , your current entry count is ... ${entries}  `}
       </div>
-      <div className='white f1'>
-        {entries}
-      </div>
+      
     </div>
   );
 }

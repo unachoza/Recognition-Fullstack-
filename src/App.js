@@ -64,14 +64,11 @@ class App extends Component {
 
   onInputChange = e => {
     const input = e.target.value;
-    console.log(input);
     this.setState({ input });
-    console.log(this.state);
   };
 
   onPictureSubmit = async () => {
     const { input, user } = this.state;
-    console.log(this.state);
     try {
       const response = await app.models.predict(Clarifai.FACE_DETECT_MODEL, input);
       console.log(response.outputs[0].data.regions);
@@ -129,17 +126,24 @@ class App extends Component {
     this.setState({ route });
   };
 
+   handleSignOut = (route) => {
+    this.setState(INITIAL_STATE)
+     this.setState({ route });
+  }
+
   render() {
     const { route, box, input, isSignedIn, user, noFace } = this.state;
-    const { onRouteChange, onInputChange, onPictureSubmit, loadUser } = this;
-    console.log(this.state);
+    const { onRouteChange, onInputChange, onPictureSubmit, loadUser, handleSignOut} = this;
 
     return (
       <div className="App">
         <Particles className="particles" params={particleOptions} />
         <Logo />
-
-        <Navagation onRouteChange={onRouteChange} route={route} isSignedIn={isSignedIn} />
+      
+        <Navagation onRouteChange={onRouteChange} route={route} isSignedIn={isSignedIn} handleSignOut={handleSignOut} />
+        <p className="f3">
+                About to Recognizze U
+            </p>
         {user.name.length > 0 && <Rank name={user.name} entries={user.entries} />}
         {route === 'home' ? (
           <div>
@@ -161,7 +165,7 @@ class App extends Component {
             {user.name.length > 0 && <User user={user} />}
           </div>
         ) : (
-          <Register onRouteChange={onRouteChange} loadUser={loadUser} />
+              <Register onRouteChange={onRouteChange}  loadUser={loadUser}  />
         )}
       </div>
     );

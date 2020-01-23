@@ -4,9 +4,7 @@ import '../CSS/ImageLinkForm.css'
 const ImageLinkForm = ({onInputChange, onSubmit, input}) => {
     return (
         <div>
-            <p className="f3">
-                {'About to Recognizze U'}
-            </p>
+            
             <div className="center">
                 <div className="br2 pa4 shadow-1 w-80 center form" style={{backgroundColor: "#00000090"}}>
                     <input className="f4 pa2  w-70 center"
