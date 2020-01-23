@@ -23,14 +23,12 @@ class Register extends Component {
       }),
     });
     res = await res.json();
-    console.log(res)
     if (res.name === 'error') {
      this.setState({error: "User email already taken"}) 
     } else {
       loadUser(res);
       onRouteChange('home');
     }
-    // console.log(this.state)
   };
 
   handleInput = event => {
@@ -39,7 +37,8 @@ class Register extends Component {
   };
 
   render() {
-    const { name, email, password , error} = this.state;
+    const { name, email, password, error } = this.state;
+    const {handleInput, onSubmit} = this
     return (
       <article className="br3 ba dark-gray b--black-10 mv4 w-100 w-50-m w-25-l mw6 shadow-5 center">
         <main className="pa4 black-80">
@@ -52,7 +51,7 @@ class Register extends Component {
                 </label>
                 <input
                   value={name}
-                  onChange={this.handleInput}
+                  onChange={handleInput}
                   className="pa2 input-reset ba bg-transparent hover-bg-black hover-white w-100 pointer"
                   type="text"
                   name="name"
@@ -65,7 +64,7 @@ class Register extends Component {
                 </label>
                 <input
                   value={email}
-                  onChange={this.handleInput}
+                  onChange={handleInput}
                   className="pa2 input-reset ba bg-transparent hover-bg-black hover-white w-100 pointer"
                   type="email"
                   name="email"
@@ -78,7 +77,7 @@ class Register extends Component {
                 </label>
                 <input
                   value={password}
-                  onChange={this.handleInput}
+                  onChange={handleInput}
                   className="b pa2 input-reset ba bg-transparent hover-bg-black hover-white w-100 pointer"
                   type="password"
                   name="password"
@@ -91,12 +90,11 @@ class Register extends Component {
                 className="b ph3 pv2 input-reset ba b--black bg-transparent grow pointer f6 dib"
                 type="submit"
                 value="Register"
-                onClick={this.onSubmit}
-                // onClick={() => this.props.onRouteChange('home')}
+                onClick={onSubmit}
               />
             </div>
           </div>
-          {error ? <h1>{error}</h1> : null}
+          {error && <h1>{error}</h1> }
         </main>
       </article>
     );

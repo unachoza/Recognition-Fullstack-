@@ -1,13 +1,5 @@
 import React from 'react' 
 
-const User = ({ user }) => {
-    return (
-        <div>
-            <div>
-                {`${user.name} you are signed in'`}
-            </div>
-        </div>
-    )
-}
+const User = ({ user }) => <div>{`${user.name} you are signed in'`}</div>
 
 export default User

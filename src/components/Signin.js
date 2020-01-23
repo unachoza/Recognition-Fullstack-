@@ -12,23 +12,22 @@ class Signin extends Component {
 
   onSubmit = async () => {
     const { email, password } = this.state;
+    const {loadUser, onRouteChange} = this.props
     let res = await fetch('http://localhost:3000/signin', {
       method: 'post',
       headers: { 'Content-type': 'application/json' },
       body: JSON.stringify({
-        email: email,
-        password: password,
+        email,
+        password
       }),
     });
 
     res = await res.json();
-    console.log(typeof res === "string")
     if (typeof res === "string") {
        return this.setState({error: res})
     }
-    console.log(res)
-    this.props.loadUser(res);
-    this.props.onRouteChange('home');
+    loadUser(res);
+    onRouteChange('home');
   };
 
   handleInput = event => {
