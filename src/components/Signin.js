@@ -21,6 +21,7 @@ class Signin extends Component {
     });
 
     res = await res.json();
+    console.log(res)
     this.props.loadUser(res);
     this.props.onRouteChange('home');
   };

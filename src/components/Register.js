@@ -7,10 +7,12 @@ class Register extends Component {
       name: '',
       email: '',
       password: '',
+      error: null
     };
   }
   onSubmit = async () => {
-    const { email, password, name } = this.state;
+    const { loadUser, onRouteChange } = this.props;
+    const { email, password, name, error } = this.state;
     let res = await fetch('http://localhost:3000/register', {
       method: 'POST',
       headers: { 'Content-type': 'application/json' },
@@ -19,12 +21,14 @@ class Register extends Component {
         email,
         password,
       }),
-    })
-    res = await res.json()
-    console.log(res)
-    console.log(res[0])
-        this.props.loadUser(res[0]);
-    this.props.onRouteChange('signin');
+    });
+    res = await res.json();
+    if (res.name === 'error') {
+     this.setState({error: res.detail}) 
+    } else {
+      loadUser(res[0]);
+      onRouteChange('signin');
+    }
   };
 
   handleInput = event => {
@@ -33,7 +37,7 @@ class Register extends Component {
   };
 
   render() {
-    const { name, email, password } = this.state;
+    const { name, email, password , error} = this.state;
     return (
       <article className="br3 ba dark-gray b--black-10 mv4 w-100 w-50-m w-25-l mw6 shadow-5 center">
         <main className="pa4 black-80">
@@ -90,6 +94,7 @@ class Register extends Component {
               />
             </div>
           </div>
+          {error ? <h1>{error}</h1> : null}
         </main>
       </article>
     );
