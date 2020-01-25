@@ -121,7 +121,10 @@ class App extends Component {
         <Logo />
 
         <Navagation onRouteChange={onRouteChange} route={route} handleSignOut={handleSignOut} />
-        <p className="f3">About to Recognizze U</p>
+        <p className="f2">Face Recognition AI </p>
+        <p id="sub-title" className="f4 hide" style={{ flexWrap: 'wrap', width: '50%', margin: 'auto' }}>
+          Enter an image url and click the Detect Button. AI will identify any faces in the image.{' '}
+        </p>
         {user.name.length > 0 && <Rank name={user.name} entries={user.entries} />}
         {route === 'home' ? (
           <div>
