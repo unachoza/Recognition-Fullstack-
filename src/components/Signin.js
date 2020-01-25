@@ -13,7 +13,7 @@ class Signin extends Component {
   onSubmit = async () => {
     const { email, password } = this.state;
     const {loadUser, onRouteChange} = this.props
-    let res = await fetch('http://localhost:3000/signin', {
+    let res = await fetch('https://sbrain-api.herokuapp.com/signin', {
       method: 'post',
       headers: { 'Content-type': 'application/json' },
       body: JSON.stringify({

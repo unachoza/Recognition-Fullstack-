@@ -13,7 +13,7 @@ class Register extends Component {
   onSubmit = async () => {
     const { loadUser, onRouteChange } = this.props;
     const { email, password, name } = this.state;
-    let res = await fetch('http://localhost:3000/register', {
+    let res = await fetch('https://sbrain-api.herokuapp.com/register', {
       method: 'POST',
       headers: { 'Content-type': 'application/json' },
       body: JSON.stringify({

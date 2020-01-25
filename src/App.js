@@ -59,7 +59,7 @@ class App extends Component {
 
   onPictureSubmit = async () => {
     const { input, user } = this.state;
-    let response = await fetch('http://localhost:3000/imageurl', {
+    let response = await fetch('https://sbrain-api.herokuapp.com/imageurl', {
       method: 'post',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({
@@ -72,7 +72,7 @@ class App extends Component {
         this.setState({ noFace: true });
         return this.state;
       } else {
-        let countUpdate = await fetch('http://localhost:3000/image', {
+        let countUpdate = await fetch('https://sbrain-api.herokuapp.com/image', {
           method: 'PUT',
           headers: { 'Content-type': 'application/json' },
           body: JSON.stringify({
