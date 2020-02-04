@@ -55,7 +55,14 @@ class App extends Component {
     });
   };
 
-  onInputChange = event => this.setState({ input: event.target.value });
+  onInputImageChange = () => {
+    this.setState({ box: null });
+  };
+
+  onInputChange = (event, onInputImageChange) =>
+    this.setState({
+      input: event.target.value,
+    });
 
   onPictureSubmit = async () => {
     const { input, user } = this.state;
