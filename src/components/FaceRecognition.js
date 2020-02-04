@@ -1,6 +1,14 @@
 import React from 'react';
 import '../CSS/FaceRecognition.css';
-const FaceRecognition = ({ img, box }) => {
+const FaceRecognition = ({ img, box, fa }) =>
+  this.state = {
+    
+  }
+  
+ this.displayFaceBox(this.calculateFaceBox(data));
+        this.setState({ noFace: false });
+
+{
   return (
     <div className="center">
       <div className="absolute mt2">

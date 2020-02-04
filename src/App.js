@@ -74,6 +74,7 @@ class App extends Component {
       }),
     });
     response = await response.json();
+    console.log(response)
     try {
       if (response.outputs[0].data.regions === undefined) {
         this.setState({ noFace: true });
@@ -89,10 +90,19 @@ class App extends Component {
         countUpdate = await countUpdate.json();
         this.setState(Object.assign(user, { entries: countUpdate }));
       }
-
-      const data = await response.outputs[0].data.regions[0].region_info.bounding_box;
+      const foundfaces = await response.outputs[0].data.regions
+      console.log("the leng", foundfaces.length ,  foundfaces)
+      
+      let faceRegions = []
+      for (let i = 0; i < foundfaces.length; i++){
+       
+        let data = foundfaces[i].region_info.bounding_box;
+      faceRegions.push(data)
+        
+      }
       this.displayFaceBox(this.calculateFaceBox(data));
-      this.setState({ noFace: false });
+        this.setState({ noFace: false });
+     
     } catch (error) {
       console.log(error);
     }
@@ -120,7 +130,7 @@ class App extends Component {
 
   render() {
     const { route, box, input, user, noFace } = this.state;
-    const { onRouteChange, onInputChange, onPictureSubmit, loadUser, handleSignOut } = this;
+    const { onRouteChange, onInputChange, onPictureSubmit, loadUser, handleSignOut , faceRegions} = this;
 
     return (
       <div className="App">
@@ -142,7 +152,7 @@ class App extends Component {
               {noFace && <h1>No face is present in this photo</h1>}
 
               <div>
-                <FaceRecognition img={input} box={box} />
+                <FaceRecognition img={input} box={box} faceRegions={this.faceRegions}/>
               </div>
             </div>
           </div>
