@@ -42,7 +42,7 @@ class App extends Component {
     this.state = INITIAL_STATE;
   }
 
-  loadUser = newUser => {
+  loadUser = (newUser) => {
     const { name, password, email, entries, id } = newUser;
     this.setState({
       user: {
@@ -57,15 +57,15 @@ class App extends Component {
 
   onInputImageChange = () => {
     this.setState({ box: null });
+    console.log('thks box', this.state.box);
   };
-
-  onInputChange = (event, onInputImageChange) =>
-    this.setState({
-      input: event.target.value,
-    });
+  onInputChange = (event) => {
+    this.setState({ input: event.target.value });
+  };
 
   onPictureSubmit = async () => {
     const { input, user } = this.state;
+    console.log(input);
     let response = await fetch('https://sbrain-api.herokuapp.com/imageurl', {
       method: 'post',
       headers: { 'Content-Type': 'application/json' },
@@ -98,7 +98,7 @@ class App extends Component {
     }
   };
 
-  calculateFaceBox = data => {
+  calculateFaceBox = (data) => {
     const image = document.getElementById('imageInput');
     const width = image.width;
     const height = image.height;
@@ -109,19 +109,20 @@ class App extends Component {
       bottomRow: Math.floor(height - data.bottom_row * height),
     };
   };
-  displayFaceBox = box => this.setState({ box: box });
+  displayFaceBox = (box) => this.setState({ box: box });
 
-  onRouteChange = route => this.setState({ route });
+  onRouteChange = (route) => this.setState({ route });
 
-  handleSignOut = route => {
+  handleSignOut = (route) => {
     this.setState(INITIAL_STATE);
     this.setState({ route });
   };
 
   render() {
+    console.log(this.state);
     const { route, box, input, user, noFace } = this.state;
-    const { onRouteChange, onInputChange, onPictureSubmit, loadUser, handleSignOut } = this;
-
+    const { onRouteChange, onInputChange, onPictureSubmit, loadUser, handleSignOut, onInputImageChange } = this;
+    console.log(box);
     return (
       <div className="App">
         <Particles className="particles" params={particleOptions} />
@@ -137,7 +138,12 @@ class App extends Component {
           <div>
             <div>
               <div>
-                <ImageLinkForm onInputChange={onInputChange} input={input} onSubmit={onPictureSubmit} />
+                <ImageLinkForm
+                  onInputChange={onInputChange}
+                  input={input}
+                  onSubmit={onPictureSubmit}
+                  onInputImageChange={onInputImageChange}
+                />
               </div>
               {noFace && <h1>No face is present in this photo</h1>}
 

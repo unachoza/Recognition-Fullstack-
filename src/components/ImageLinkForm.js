@@ -1,7 +1,8 @@
 import React from 'react';
 import '../CSS/ImageLinkForm.css';
 
-const ImageLinkForm = ({ onInputChange, onSubmit, input }) => {
+const ImageLinkForm = ({ onInputChange, onSubmit, input, onInputImageChange }) => {
+  // onInputChange();
   return (
     <div className="center">
       <div className="br2 pa4 shadow-1 w-80 center form" style={{ backgroundColor: '#00000090' }}>
@@ -10,7 +11,7 @@ const ImageLinkForm = ({ onInputChange, onSubmit, input }) => {
           type="text"
           value={input}
           name="img"
-          onChange={e => onInputChange(e)}
+          onChange={(e) => onInputChange(e)}
           autoComplete="none"
         />
         <br />
